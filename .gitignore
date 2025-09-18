@@ -1,0 +1,32 @@
+# Django
+*.pyc
+__pycache__/
+db.sqlite3
+*.sqlite3
+*.log
+
+# Media and static files
+/media/
+staticfiles/
+static/
+
+# Environment
+.env
+*.env
+
+# IDEs and editors
+.vscode/
+
+# Migrations
+*/migrations/
+*/migrations/*.pyc
+*/migrations/*.pyo
+*/migrations/*.db
+
+# Build
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+MANIFEST
