@@ -33,8 +33,32 @@ class RegisterView(APIView):
         return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
 
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        return Response(
+            {
+                "username": user.username,
+                "email": user.email,
+            }
+        )
+
+
 class TaskViewSet(viewsets.ModelViewSet):
-    queryset = Task.objects.all()
+    queryset = Task.objects.all()  # Ajouté pour DRF router
     serializer_class = TaskSerializer
     permission_classes = [permissions.IsAuthenticated]
-    # permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Task.objects.filter(assigned_to=user)
+
+    def perform_create(self, serializer):
+        serializer.save(assigned_to=self.request.user)
